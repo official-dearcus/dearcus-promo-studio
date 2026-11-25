@@ -114,12 +114,12 @@ body.gal #gal{display:flex}body.gal #app,body.gal .ed{display:none}body.start #g
 .gcard .meta{display:flex;justify-content:space-between;gap:6px;align-items:center}
 .gcard .nm{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gcard .why{font-size:11px;color:#8A5A00;white-space:normal}
-.gcard .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}.gcard .acts button{min-height:32px;font-size:11px;padding:0;border:1px solid var(--line);border-radius:6px;background:#fff}
+.gcard .acts{display:grid;grid-template-columns:repeat(2,1fr);gap:4px}.gcard .pk{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--sub);cursor:pointer;padding:2px 0}.gcard .pk input{width:16px;height:16px;accent-color:var(--green)}.gcard.picked{outline:2px solid var(--green);outline-offset:1px}.gcard .acts button{min-height:32px;font-size:11px;padding:0;border:1px solid var(--line);border-radius:6px;background:#fff}
 .gcard .done{min-height:34px;border:0;border-radius:6px;background:var(--green);color:#fff;font-size:12px;font-weight:700}
 .gempty{padding:40px;text-align:center;color:var(--sub);font-size:13px}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1A1D21;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;display:none;z-index:11;max-width:90vw}
 @media (max-width:820px){#app{flex-direction:column}aside{width:auto;max-height:46vh;border-right:0;border-bottom:1px solid var(--line)}}
-details.grp{border:1px solid var(--line,#E3E6EA);border-radius:8px;padding:6px 10px;margin:0 0 6px}details.grp>summary{cursor:pointer;font-size:13px;font-weight:700;padding:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}details.grp>summary small{color:var(--sub);font-weight:500}details.grp .f{margin-top:6px}.pchip{display:inline-block;background:var(--green);color:#fff;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:800;margin:0 2px;vertical-align:1px}</style>
+details.grp{border:1px solid var(--line,#E3E6EA);border-radius:8px;padding:6px 10px;margin:0 0 6px}details.grp>summary{cursor:pointer;font-size:13px;font-weight:700;padding:4px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}details.grp>summary small{color:var(--sub);font-weight:500}details.grp .f{margin-top:6px}.pchip{display:inline-block;background:var(--green);color:#fff;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:800;margin:0 2px;vertical-align:1px}#undoBtn,#redoBtn{display:none!important}</style>
 </head>
 <body>
 <header>
@@ -146,7 +146,7 @@ details.grp{border:1px solid var(--line,#E3E6EA);border-radius:8px;padding:6px 1
 <div class="card"><div class="sum" id="startSum"></div></div>
 <div class="card go"><div><button class="btn" id="sampleBtn">예시 불러오기 (11월 블랙프라이데이)</button><p class="hint" style="margin:6px 0 0">예시는 화면을 미리 보는 용도입니다.</p></div><button class="btn pri" id="genBtn" style="min-height:52px;padding:0 28px;font-size:16px" disabled>전체 제작물 생성하기</button></div>
 </div></section>
-<section id="gal" aria-label="전체 제작물"><aside id="galSide"></aside><div id="galMain"><div id="galStats"></div><div id="galTools"><input id="galQ" type="search" placeholder="상품명으로 찾기" aria-label="상품명으로 찾기"><span class="hint" style="margin-left:auto">이미지를 누르면 선택, 두 번 누르면 편집 화면이 열립니다.</span></div><div id="galBody"></div></div></section>
+<section id="gal" aria-label="전체 제작물"><aside id="galSide"></aside><div id="galMain"><div id="galStats"></div><div id="galTools"><input id="galQ" type="search" placeholder="상품명으로 찾기" aria-label="상품명으로 찾기"><span id="pickBar" style="display:none;align-items:center;gap:6px;margin-left:10px"><b id="pickN" style="font-size:13px"></b><button class="btn pri" id="pickZip" style="min-height:36px;font-size:12px">선택한 것만 ZIP 받기</button><button class="btn" id="pickDel" style="min-height:36px;font-size:12px">선택한 것 삭제</button><button class="btn" id="pickClear" style="min-height:36px;font-size:12px">선택 해제</button></span><span class="hint" style="margin-left:auto">이미지를 누르면 선택, 두 번 누르면 크게 보기가 열립니다.</span></div><div id="galBody"></div></div></section>
 <div id="app">
 <aside aria-label="수정 패널">
 <div id="panel"></div>
@@ -161,6 +161,7 @@ details.grp{border:1px solid var(--line,#E3E6EA);border-radius:8px;padding:6px 1
 <button class="btn" id="nextBtn">다음 ›</button>
 <span class="hint" style="margin-left:8px">휠: 확대·축소 · Space+드래그: 화면 이동 · 방향키: 1px (Shift 10px)</span>
 <div class="sp" style="display:flex;align-items:center;gap:4px">
+<button class="btn" id="undo2" title="Ctrl+Z">↶ 이전으로</button><button class="btn" id="redo2" title="Ctrl+Shift+Z">↷ 다시</button><button class="btn" id="resetBtn" title="이 이미지를 처음 생성된 상태로">처음 상태로</button><span style="width:10px"></span>
 <button class="btn icon" id="zOut" aria-label="축소">−</button>
 <input id="zoomIn" aria-label="배율" value="100%">
 <button class="btn icon" id="zIn" aria-label="확대">+</button>
@@ -215,9 +216,9 @@ function label(sec,els){
 let EVENT='';const BN_META=[[1920,560,'메인배너 PC','메인배너_PC','가이드: 라벨 18 · 메인 타이틀 44 (Regular+SemiBold) · 서브 18 · 왼쪽 여백 240'],[1280,1850,'메인배너 MO','메인배너_MO','가이드: 라벨 46 · 메인 타이틀 92 (Regular+SemiBold) · 서브 46 · 왼쪽 여백 100'],[860,180,'띠배너','띠배너','가이드: 메인 타이틀 SemiBold 38 · 서브 타이틀 Light 30'],[1000,1000,'온사이트','온사이트','']];
 function autoTheme(S){const n={};const add=(c,w)=>{if(typeof c!=='string'||c[0]!=='#')return;const r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);if(Math.max(r,g,b)-Math.min(r,g,b)<60)return;n[c]=(n[c]||0)+w;};
  (S.sections||[]).concat(S.banners||[]).forEach(sec=>sec.els.forEach(e=>{if(e.type==='text'){add(e.color,1);if(e.em)add(e.em.color,1);}else if(e.type==='rect')add(e.fill,e.w*e.h>40000?0.5:1.5);}));
- const top=Object.keys(n).sort((a,b)=>n[b]-n[a]);return {point:top[0]||'#2F4A3D',price:top[1]||top[0]||'#0077F6'};}
+ const top=Object.keys(n).sort((a,b)=>n[b]-n[a]);return {point:top[0]||null,price:top[1]||null};}
 function emptyWork(){return {products:{},theme:{global:{point:'#D8FF2E',price:'#0077F6'},types:{}},arts:[]};}
-function buildWork(S){uid=0;const th=S.theme||autoTheme(S),TOKENS={};TOKENS[th.point]='@point';if(th.price!==th.point)TOKENS[th.price]='@price';
+function buildWork(S){uid=0;const th=Object.assign({},S.theme||autoTheme(S)),TOKENS={};if(!th.point)th.point='#2F4A3D';if(!th.price)th.price=th.point;TOKENS[th.point]='@point';if(th.price!==th.point)TOKENS[th.price]='@price';
  (S.banners||[]).forEach(sec=>{if(sec.title)return;const m=BN_META.find(x=>Math.abs(x[0]-sec.w)<3&&Math.abs(x[1]-sec.h)<3);sec.title=m?m[2]:(sec.name||(sec.w+'×'+sec.h));sec.file=m?m[3]:sec.title.replace(/[\\/:*?"<>|]/g,'_');sec.guide=m?m[4]:'';});
  return {products:{},theme:{global:{point:th.point,price:th.price},types:{}},
  arts:(S.sections||[]).map((sec,i)=>{const els=sec.els.map(o=>{const e=E(clone(o));
@@ -340,7 +341,7 @@ $('undoBtn').onclick=undo;$('redoBtn').onclick=redo;
 /* ---------- 선택과 조작 ---------- */
 function selEl(){return sel?art().els.find(e=>e.id===sel):null;}
 function toWorld(e){const r=view.getBoundingClientRect();return {x:(e.clientX-r.left-tx)/z,y:(e.clientY-r.top-ty)/z,sx:e.clientX-r.left,sy:e.clientY-r.top};}
-function hit(p){const a=art();for(let i=a.els.length-1;i>=0;i--){const el=a.els[i];if(el.hide||el.lock)continue;const b=box(a,el);if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h)return el;}return null;}
+function hit(p){const a=art();for(let i=a.els.length-1;i>=0;i--){const el=a.els[i];if(el.hide||el.lock)continue;const cl=clipOf(a,el);if(cl&&(p.x<cl[0]||p.x>cl[0]+cl[2]||p.y<cl[1]||p.y>cl[1]+cl[3]))continue;const b=box(a,el);if(p.x>=b.x&&p.x<=b.x+b.w&&p.y>=b.y&&p.y<=b.y+b.h)return el;}return null;}
 function handleAt(p){const el=selEl();if(!el||el.lock||el.hide)return null;const b=box(art(),el),t=8/z;const cs={nw:[b.x,b.y],ne:[b.x+b.w,b.y],sw:[b.x,b.y+b.h],se:[b.x+b.w,b.y+b.h]};for(const k in cs)if(Math.abs(p.x-cs[k][0])<=t&&Math.abs(p.y-cs[k][1])<=t)return k;return null;}
 function select(id){sel=id;const el=selEl();if(el&&el.bind)curProd=el.bind.p;renderPanel();draw();const f=document.querySelector('[data-tx="'+id+'"],[data-el="'+id+'"]');if(f&&f.scrollIntoView)f.scrollIntoView({block:'nearest'});}
 view.addEventListener('pointerenter',()=>{active=true;});view.addEventListener('pointerleave',()=>{if(!mode)active=false;});
@@ -450,7 +451,7 @@ function renderPanel(){
  const rk={'상단':0,'메인 타이틀':1,'서브 타이틀':2};gs.sort((p,q)=>((rk[p.name]!=null?rk[p.name]:9)-(rk[q.name]!=null?rk[q.name]:9))||(Math.abs(p.y-q.y)>20?p.y-q.y:p.list[0].x-q.list[0].x));
  const fld=x=>'<label class="f">'+(x.label?esc(x.label):x.hide?'<span style="color:var(--sub)">(숨김) </span>':'')+'<textarea rows="'+(String(x.text).split('\n').length)+'" data-tx="'+x.id+'" aria-label="'+esc(x.name)+'"'+(x.id===sel?' style="border-color:var(--green);box-shadow:0 0 0 2px rgba(47,74,61,.18)"':'')+'>'+esc(x.text)+'</textarea></label>';
  if(gs.length){h+='<div class="sec"><h3>문구</h3><p class="hint">캔버스에서 글자를 누르면 해당 칸이 열립니다. [[ ]] 안의 글자는 기본 컬러입니다.</p>';
-  gs.forEach(g=>{const key='g:'+a.id+':'+g.k,isOpen=gs.length<=2||uiOpen.has(key)||g.list.some(x=>x.id===sel);const sub=g.opt?optName(a,g.k):'';
+  gs.forEach(g=>{const key='g:'+a.id+':'+g.k,isOpen=gs.length<=2||uiOpen.has(key)||g.list.some(x=>x.id===sel)||(el&&el.gk!=null&&el.gk===g.k);const sub=g.opt?optName(a,g.k):'';
    let rows;
    if(g.opt){const R=r=>g.list.find(x=>x.role===r),nm=R('name'),pv=R('pv'),p3=R('p3'),pct=R('pct'),cta=R('cta'),l3=R('l3'),lv=R('lv');const num=t=>String(t||'').replace(/[^0-9]/g,'');
     const hl=x=>x&&x.id===sel?' style="border-color:var(--green);box-shadow:0 0 0 2px rgba(47,74,61,.18)"':'';
@@ -537,7 +538,9 @@ $('stripBtn').onclick=()=>{const s=$('strip');const c=s.classList.toggle('closed
 let gType='all',gStatus=null,gQuery='',gSel=null;const G_TYPES=['banner','event','thumb','kakao'],G_SUB={banner:'규격 4종',event:'폭 860',thumb:'1056×1318',kakao:'768×1024'};
 function showGallery(){sel=null;document.body.classList.add('gal');renderGallery();}
 function gThumb(a){const H=a.w/a.h>2.5?110:200,s=Math.max(H/a.h,120/a.w),w=Math.round(a.w*s),c=document.createElement('canvas');c.width=w*2;c.height=H*2;c.style.width=w+'px';c.style.height=H+'px';const x=c.getContext('2d');x.scale(s*2,s*2);drawArt(x,a);return c;}
-function renderGallery(){const n={todo:0,ask:0,done:0,redo:0};work.arts.forEach(a=>n[a.status]++);
+const picked=new Set();
+function pickBar(){[...picked].forEach(id=>{if(!work.arts.some(a=>a.id===id))picked.delete(id);});$('pickBar').style.display=picked.size?'flex':'none';$('pickN').textContent='담은 것 '+picked.size+'개';}
+function renderGallery(){pickBar();const n={todo:0,ask:0,done:0,redo:0};work.arts.forEach(a=>n[a.status]++);
  const cnt=t=>work.arts.filter(a=>a.type===t).length;
  $('galSide').innerHTML='<button data-gt="all" class="'+(gType==='all'&&!gStatus?'on':'')+'">전체 <b>'+work.arts.length+'</b></button>'+G_TYPES.map(t=>'<button data-gt="'+t+'" class="'+(gType===t?'on':'')+'"'+(cnt(t)?'':' disabled title="아직 틀이 없습니다"')+'>'+TYPE_NAME[t]+' <b>'+cnt(t)+'</b></button>').join('')+'<button data-gs="ask" class="ask'+(gStatus==='ask'?' on':'')+'">확인 필요 <b>'+n.ask+'</b></button>';
  $('galStats').innerHTML=[['','전체 제작물',work.arts.length],['ask','확인 필요',n.ask],['todo','미검수',n.todo+n.redo],['done','검수 완료',n.done]].map(x=>'<button data-gs="'+x[0]+'" class="'+(x[0]==='ask'?'ask ':'')+((gStatus||'')===x[0]?'on':'')+'">'+x[1]+'<b>'+x[2]+'</b></button>').join('');
@@ -547,9 +550,9 @@ function renderGallery(){const n={todo:0,ask:0,done:0,redo:0};work.arts.forEach(
   const sec=document.createElement('div');sec.className='gsec';sec.innerHTML='<h2>'+TYPE_NAME[ty]+'<small>'+G_SUB[ty]+' · '+list.length+'장</small></h2>';
   const wrap=document.createElement('div');wrap.className='gwrap';const row=document.createElement('div');row.className='grow';
   for(const [a,i] of list){const b=document.createElement('div');b.className='gcard'+(gSel===i?' sel':'')+(a.status==='ask'?' askc':'');b.tabIndex=0;b.dataset.i=i;const c=gThumb(a);b.style.width=Math.max(parseInt(c.style.width)+16,gSel===i?190:0)+'px';
-   const meta=document.createElement('div');meta.className='meta';const nm=document.createElement('span');nm.className='nm';nm.textContent=a.name.replace(/^(이벤트 페이지 |썸네일 · |배너 · |카카오톡 · )/,'');nm.title=a.name;const ch=document.createElement('span');ch.className='chip '+a.status;ch.textContent=STATUS_LABEL[a.status]+(dirty[a.id]?' · 수정 중':'');meta.append(nm,ch);b.append(c,meta);
+   const meta=document.createElement('div');meta.className='meta';const nm=document.createElement('span');nm.className='nm';nm.textContent=a.name.replace(/^(이벤트 페이지 |썸네일 · |배너 · |카카오톡 · )/,'');nm.title=a.name;const ch=document.createElement('span');ch.className='chip '+a.status;ch.textContent=STATUS_LABEL[a.status]+(dirty[a.id]?' · 수정 중':'');meta.append(nm,ch);b.append(c,meta);const pk=document.createElement('label');pk.className='pk';pk.innerHTML='<input type="checkbox" data-pk="'+a.id+'"'+(picked.has(a.id)?' checked':'')+'>담기';b.append(pk);if(picked.has(a.id))b.classList.add('picked');
    const iss=a.issues.find(x=>!x.ok);if(iss){const w=document.createElement('span');w.className='why';w.textContent=iss.text;b.append(w);}
-   if(gSel===i){const acts=document.createElement('div');acts.className='acts';acts.innerHTML='<button data-ga="view">크게 보기</button><button data-ga="edit">편집</button><button data-ga="jpg">JPG 받기</button>';const d=document.createElement('button');d.className='done';d.dataset.ga='done';d.textContent=a.status==='done'?'검수 완료됨':'검수 완료';d.disabled=a.status==='done';b.append(acts,d);}
+   if(gSel===i){const acts=document.createElement('div');acts.className='acts';acts.innerHTML='<button data-ga="view">크게 보기</button><button data-ga="edit">편집</button>';const d=document.createElement('button');d.className='done';d.dataset.ga='done';d.textContent=a.status==='done'?'검수 완료됨':'검수 완료';d.disabled=a.status==='done';b.append(acts,d);}
    row.append(b);}
   const mk=(cls,t,dir)=>{const nb=document.createElement('button');nb.className='gnav '+cls;nb.textContent=t;nb.setAttribute('aria-label',dir>0?'다음':'이전');nb.onclick=()=>row.scrollBy({left:dir*row.clientWidth*0.8});return nb;};
   wrap.append(mk('l','‹',-1),row,mk('r','›',1));sec.append(wrap);body.append(sec);if(row.scrollWidth>row.clientWidth+4)wrap.classList.add('scroll');}
@@ -559,15 +562,23 @@ $('galStats').addEventListener('click',e=>{const b=e.target.closest('button');if
 $('galQ').addEventListener('input',e=>{gQuery=e.target.value;gSel=null;renderGallery();});
 function bigView(i){const a=work.arts[i],s=Math.min(1,720/a.w),c=document.createElement('canvas');c.width=Math.round(a.w*s);c.height=Math.round(a.h*s);const x=c.getContext('2d');x.scale(s,s);drawArt(x,a);
  openModal('<h2>'+esc(a.name)+'</h2><div id="bigBox" style="max-height:66vh;overflow:auto;background:#eee;border-radius:8px;text-align:center"></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="mNo">닫기</button><button class="btn pri" id="mYes">편집하기</button></div>');c.style.maxWidth='100%';$('bigBox').append(c);$('mNo').onclick=closeModal;$('mYes').onclick=()=>{closeModal();openEditor(i);};}
-$('galBody').addEventListener('click',async e=>{const card=e.target.closest('.gcard');if(!card)return;const i=+card.dataset.i,a=work.arts[i],act=e.target.dataset.ga;
+$('galBody').addEventListener('click',async e=>{const card=e.target.closest('.gcard');if(!card)return;if(e.target.closest('.pk')){const cb=card.querySelector('[data-pk]');if(e.target===cb){cb.checked?picked.add(cb.dataset.pk):picked.delete(cb.dataset.pk);card.classList.toggle('picked',cb.checked);pickBar();}return;}const i=+card.dataset.i,a=work.arts[i],act=e.target.dataset.ga;
+ if(!act){const now=Date.now();if(lastTap.i===i&&now-lastTap.t<450){lastTap={i:-1,t:0};gSel=i;renderGallery();return bigView(i);}lastTap={i:i,t:now};}
  if(act==='edit')return openEditor(i);if(act==='view')return bigView(i);
  if(act==='jpg'){const b=await renderBlob(dirty[a.id]?saved.arts[i]:a);saveFile(fileName(a),b);return;}
  if(act==='done'){if(dirty[a.id]){toast('저장하지 않은 변경이 있습니다. 편집 화면에서 변경 적용을 먼저 누르세요.');return;}a.status='done';saved.arts[i].status='done';a.issues.forEach(x=>x.ok=true);saved.arts[i].issues.forEach(x=>x.ok=true);toast('검수 완료로 표시했습니다.');renderGallery();return;}
  const st=$('galMain').scrollTop,sl=card.parentNode.scrollLeft,ty=a.type;gSel=gSel===i?null:i;renderGallery();$('galMain').scrollTop=st;const r=[...document.querySelectorAll('.gsec')].find(x=>x.querySelector('[data-i="'+i+'"]'));if(r)r.querySelector('.grow').scrollLeft=sl;});
-$('galBody').addEventListener('dblclick',e=>{const card=e.target.closest('.gcard');if(card&&!e.target.dataset.ga)openEditor(+card.dataset.i);});
+let lastTap={i:-1,t:0};
 $('galBody').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList.contains('gcard'))openEditor(+e.target.dataset.i);});
+async function zipArts(idx,name){const files=[];for(const i of idx){const a=dirty[work.arts[i].id]?withSaved(i):work.arts[i];const b=await renderBlob(a);files.push({name:TYPE_NAME[a.type]+'/'+fileName(a),data:new Uint8Array(await b.arrayBuffer())});}saveFile(name,zip(files));}
+$('pickZip').onclick=async()=>{const idx=work.arts.map((a,i)=>picked.has(a.id)?i:-1).filter(i=>i>=0);if(!idx.length)return;toast(idx.length+'개를 ZIP으로 만드는 중입니다.');await zipArts(idx,(EVENT||'행사').replace(/[\\/:*?"<>|\s]+/g,'')+'_선택'+idx.length+'개.zip');};
+$('pickClear').onclick=()=>{picked.clear();renderGallery();};
+$('pickDel').onclick=()=>{const n=picked.size;if(!n)return;openModal('<h2>담은 '+n+'개를 삭제할까요?</h2><p style="margin:0">이 행사 작업에서 빠지고 전체 ZIP에도 들어가지 않습니다. 되돌릴 수 없습니다.</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="mNo">취소</button><button class="btn pri" id="mYes">'+n+'개 삭제</button></div>');$('mNo').onclick=closeModal;
+ $('mYes').onclick=()=>{closeModal();const keep=a=>!picked.has(a.id);saved.arts=saved.arts.filter(keep);work.arts=work.arts.filter(keep);picked.clear();gSel=null;cur=0;sel=null;if(work.arts.length){renderStrip();}renderGallery();toast(n+'개를 삭제했습니다.');};};
 function openEditor(i){document.body.classList.remove('gal');cur=-1;go(i);}
 $('listBtn').onclick=showGallery;
+$('undo2').onclick=()=>undo();$('redo2').onclick=()=>redo();
+$('resetBtn').onclick=()=>{const h=H();if(!h||!h.orig)return;openModal('<h2>처음 상태로 되돌릴까요?</h2><p style="margin:0">이 이미지에서 한 수정이 모두 사라지고 처음 생성된 모습으로 돌아갑니다. 바로 뒤에 ↶ 이전으로를 누르면 다시 살릴 수 있습니다.</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="mNo">취소</button><button class="btn pri" id="mYes">처음 상태로</button></div>');$('mNo').onclick=closeModal;$('mYes').onclick=()=>{closeModal();restore(h.orig);commit();renderPanel();draw();toast('처음 상태로 되돌렸습니다.');};};
 /* ---------- 저장과 검수 ---------- */
 function toast(t){const n=$('toast');n.textContent=t;n.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>{n.style.display='none';},3200);}
 function openModal(html){$('modalBox').innerHTML=html;$('modal').classList.add('open');const b=$('modalBox').querySelector('button');if(b)b.focus();}
@@ -624,7 +635,7 @@ async function startWork(S,name){EVENT=name;$('evName').textContent=name;work=bu
  const SRCS=[...new Set(work.arts.flatMap(a=>a.els.filter(e=>e.type==='image'||e.fb).map(e=>e.fb?e.fb.src:e.src)))].filter(k=>!imgs[k]);
  await Promise.all(SRCS.map(loadImg).concat([FONTS_READY]));
  work.arts.forEach(a=>{if(a.type==='thumb')thumbLayout(a);});saved=clone(work);Object.keys(hist).forEach(k=>delete hist[k]);Object.keys(dirty).forEach(k=>delete dirty[k]);
- work.arts.forEach(a=>{hist[a.id]={stack:[JSON.stringify({a:a,p:work.products,t:work.theme})],i:0};});
+ work.arts.forEach(a=>{const s0=JSON.stringify({a:a,p:work.products,t:work.theme});hist[a.id]={stack:[s0],i:0,orig:s0};});
  cur=0;sel=null;document.body.classList.remove('start');renderStrip();renderPanel();showGallery();}
 /* ---------- STEP 01: 행사 설정 ---------- */
 const pend=[];let busy=0;
@@ -656,7 +667,9 @@ $('genBtn').onclick=async()=>{const S={sections:[],banners:[],thumbs:[]},lib={cu
  pend.forEach(f=>{if(f.scene){if(f.kind==='event')S.sections.push(...f.scene.sections);else f.scene.sections.forEach(sec=>{if(Math.abs(sec.w-860)<=2&&sec.h>=600){if(!sec.name||!/[가-힣a-z]/i.test(sec.name))sec.name='Main';S.sections.unshift(sec);return;}if(KAKAO_SIZES.some(k=>Math.abs(k[0]-sec.w)<3&&Math.abs(k[1]-sec.h)<3)){sec.kind='kakao';sec.title=sec.name||'카카오톡';sec.file=sec.title.replace(/[\\/:*?"<>|]/g,'_');sec.guide='';}S.banners.push(sec);});}
   if(f.thumb){S.thumbs.push(f.thumb);lib.shots.push(f.thumb);}if(f.cutout)lib.cutouts.push(f.cutout);if(f.plan&&f.plan.products.length)plan=f.plan;});
  $('genBtn').disabled=true;$('genBtn').textContent='생성 중…';let log=null;
- try{if(plan){const B=await loadBuiltin();await FONTS_READY;S.theme=(S.sections.length||S.banners.length)?autoTheme(S):{point:B.theme.point,price:B.theme.price};
+ try{if(plan){const B=await loadBuiltin();await FONTS_READY;const at=autoTheme(S),own=S.sections.some(sec=>planTemplate(sec));
+   const strong=c=>{if(!c)return false;const r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);return Math.max(r,g,b)-Math.min(r,g,b)>=110&&(0.299*r+0.587*g+0.114*b)<=150;};
+   S.theme=own?{point:at.point||B.theme.point,price:at.price||at.point||B.theme.price}:{point:at.point||B.theme.point,price:strong(at.price)?at.price:B.theme.price};
    (B.thumbs||[]).forEach(t=>lib.shots.push({name:t.name,src:t.src}));
    const upl=S.thumbs.slice();S.thumbs=[];
    log=applyPlan(S,plan,lib,B,S.theme,el=>lay({over:{},products:[]},el).w);
@@ -666,6 +679,7 @@ $('genBtn').onclick=async()=>{const S={sections:[],banners:[],thumbs:[]},lib={cu
  if(log){openModal('<h2>엑셀로 만든 것</h2><ul style="margin:0;padding-left:18px;line-height:1.7">'+log.made.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>'+(log.notes.length?'<h2 style="margin-top:8px">확인할 것</h2><ul style="margin:0;padding-left:18px;line-height:1.7;color:#5C3D00">'+log.notes.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'')+'<div style="display:flex;justify-content:flex-end"><button class="btn pri" id="mYes">확인</button></div>');$('mYes').onclick=closeModal;}};
 $('sampleBtn').onclick=()=>{$('sampleBtn').disabled=true;$('sampleBtn').textContent='예시 불러오는 중…';loadBuiltin().then(S=>startWork(JSON.parse(JSON.stringify(S)),'11월 블랙프라이데이 (예시)')).catch(()=>{toast('예시를 불러오지 못했습니다.');$('sampleBtn').disabled=false;});};
 document.body.classList.add('start');renderStart();
+if(!/[?&]sample/.test(location.search)){const sb=$('sampleBtn');if(sb&&sb.parentNode)sb.parentNode.style.display='none';$('genBtn').style.marginLeft='auto';}
 $('newBtn').onclick=()=>{openModal('<h2>새 행사 시작</h2><p style="margin:0">지금 작업은 저장되지 않고 사라집니다. 필요한 이미지는 먼저 ZIP으로 받아 두세요.</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="mNo">취소</button><button class="btn pri" id="mYes">새 행사 시작</button></div>');$('mNo').onclick=closeModal;$('mYes').onclick=()=>location.reload();};
 window.__ed={get z(){return z;},get tx(){return tx;},get ty(){return ty;},get work(){return work;},get saved(){return saved;},get cur(){return cur;},get sel(){return sel;},get dirty(){return dirty;},box:(i,id)=>box(work.arts[i],work.arts[i].els.find(e=>e.id===id)),renderBlob:renderBlob,hist:hist};
 </script>

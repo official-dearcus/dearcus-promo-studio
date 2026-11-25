@@ -7,6 +7,7 @@
 - `gen.js` : 기획안 엑셀을 읽어 쿠폰·옵션 카드·썸네일을 자동 생성
 - `agpsd.js`(ag-psd, MIT), `xlsx.js`(SheetJS, Apache-2.0) : PSD·엑셀 읽기 라이브러리
 - `fonts/` : Pretendard, G마켓 산스 Bold (Utile Display는 Adobe Fonts에서 불러옴)
-- `scene.js`, `*.webp` : 기본 틀(블프 디자인)과 상품 이미지·연출컷. PSD에 옵션 카드 틀이 없을 때와 "예시 불러오기"에서 사용
+- `scene.js` : 기본 옵션 틀(쿠폰·1구·2구·함께 담기·사은품)과 공용 상품 이미지 목록
+- `th00~28.webp` : 공용 썸네일 연출컷 / 나머지 `.webp` : 공용 상품 누끼와 기본 틀의 배경·아이콘
 
 Vercel 설정: Framework Preset = Other, Build Command / Output Directory 비움.

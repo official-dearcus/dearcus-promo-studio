@@ -54,7 +54,9 @@ function template(sec){
   imgBox:(()=>{const im=cardEls.filter(e=>e.type==='image'&&!e.rasterText).sort((a,b)=>b.w*b.h-a.w*a.h)[0];return im?{x:im.x,y:im.y,w:im.w,h:im.h}:null;})()};
 }
 const normName=s=>String(s).normalize('NFC').toLowerCase().replace(/\[\[|\]\]/g,'').replace(/[()\[\]+·,./\-_&]/g,' ').replace(/\s+/g,' ').trim();
-function score(a,b){const A=normName(a).split(' ').filter(Boolean),B=normName(b).replace(/ /g,'');if(!A.length)return 0;let hit=0;A.forEach(t=>{if(B.indexOf(t)>=0)hit+=t.length;});return hit/A.join('').length;}
+const setKey=s=>{const n=normName(s).replace(/ /g,'');const m=String(s).match(/(\d)\s*\+\s*(\d)/),t=n.match(/(\d+)(세트|set)/);return (m?m[1]+'+'+m[2]:'')+'|'+(t?t[1]:'');};
+const FILL=/^(포함|구성|세트구성|본품)$/;
+function score(a,b){const ka=setKey(a).split('|'),kb=setKey(b).split('|');if(ka[0]!==kb[0])return 0;if(ka[1]&&kb[1]&&ka[1]!==kb[1])return 0;const A=normName(a).split(' ').filter(t=>t&&!FILL.test(t)),B=normName(b).replace(/ /g,'');if(!A.length)return 0;let hit=0;A.forEach(t=>{if(B.indexOf(t)>=0)hit+=t.length;});return hit/A.join('').length;}
 function best(name,list,get){let bi=-1,bs=0;list.forEach((x,i)=>{const s=Math.min(score(name,get(x)),score(get(x),name));if(s>bs){bs=s;bi=i;}});return bs>=0.72?list[bi]:null;}
 
 function wrapName(name,el,maxW,lines,measure){
@@ -62,11 +64,12 @@ function wrapName(name,el,maxW,lines,measure){
  const sp=[];for(let i=0;i<name.length;i++)if(name[i]===' ')sp.push(i);if(!sp.length)return name;
  const mid=name.length/2;sp.sort((a,b)=>Math.abs(a-mid)-Math.abs(b-mid));return name.slice(0,sp[0])+'\n'+name.slice(sp[0]+1);}
 
-function fillCard(T,p,cx,cy,out,ctx){
+function fillCard(T,p,cx,cy,out,ctx,no){
  const base=out.length,map=[];
  const tplLines=r=>{const e=T.cardEls.find(x=>x.role===r);return e?String(e.text).split('\n').length:0;};
  T.cardEls.forEach((src,j)=>{const e=JSON.parse(JSON.stringify(src));e.x+=cx;e.y+=cy;if(e.clip){e.clip[0]+=cx;e.clip[1]+=cy;}
   if(e._c!=null&&e._c>=0)e.cref=base+e._c;delete e._c;
+  e.g=String(e.g||'').replace(/^[^/]*/,'opt'+String(no).padStart(2,'0'));
   const role=e.role;delete e.role;
   if(role==='name'){const card=T.cardEls.filter(x=>x.type==='rect').sort((a,b)=>b.w*b.h-a.w*a.h)[0];const maxW=T.cols>1?card.w-(src.x-card.x)*2:card.w*0.52;
    e.name=p.name.slice(0,24);const tl=String(src.text).split('\n').length;
@@ -90,7 +93,7 @@ function fillCard(T,p,cx,cy,out,ctx){
 function buildSection(T,products,ctx,title){
  const sec=T.sec,rows=Math.ceil(products.length/T.cols),newBottom=T.y0+(rows-1)*T.rowPitch+T.cardH,delta=Math.round(newBottom-T.lastBottom);
  const out=[],idxMap={};let placed=false;
- const put=()=>{products.forEach((p,i)=>{fillCard(T,p,T.x0+(i%T.cols)*T.colPitch,T.y0+Math.floor(i/T.cols)*T.rowPitch,out,ctx);});placed=true;};
+ const put=()=>{products.forEach((p,i)=>{fillCard(T,p,T.x0+(i%T.cols)*T.colPitch,T.y0+Math.floor(i/T.cols)*T.rowPitch,out,ctx,i+1);});placed=true;};
  T.frame.forEach(f=>{if(!placed&&f.i>T.firstIdx)put();const e=JSON.parse(JSON.stringify(f.e));
   if(e.type==='image'&&!e.rasterText&&f.i>T.firstIdx&&e.y>=T.y0-5&&e.y<T.lastBottom-5&&e.h<sec.h*0.6){idxMap[f.i]=null;return;}
   const tall=(e.type!=='text')&&e.h>=sec.h*0.6;
